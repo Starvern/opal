@@ -5,17 +5,34 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * <p>
+ *
+ * </p>
+ * @param <T> The type of value this field holds.
+ * @since 0.0.2
+ */
 public abstract class AbstractField<T>
 {
-    protected final ConfigurationSection section;
     protected final String key;
 
+    protected ConfigurationSection section;
+    protected T value;
+
     public AbstractField(
-            @NotNull ConfigurationSection section,
-            @NotNull String key
+            @NotNull String key,
+            @NotNull T value
     ) {
-        this.section = section;
         this.key = key;
+        this.value = value;
+    }
+
+    public AbstractField(
+            @NotNull String key,
+            @NotNull ConfigurationSection section
+    ) {
+        this.key = key;
+        this.section = section;
     }
 
     /**
@@ -37,7 +54,16 @@ public abstract class AbstractField<T>
     }
 
     /**
-     * @return The value retrieved and parsed from the config.
+     * @return The {@link Class} of the type of value this field holds.
+     * @since 0.0.3
+     */
+    public abstract Class<T> getType();
+
+    /**
+     * @return <p>
+     *     Either the {@link AbstractField#value} passed to this field, or if null,
+     *     the value retrieved from the {@link AbstractField#getSection()}.
+     * </p>
      * @since 0.0.2
      */
     public abstract @Nullable T getValue();
