@@ -1,4 +1,4 @@
-package net.sierr.opal.item;
+package net.sierr.opal.fields;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -10,16 +10,16 @@ import org.jetbrains.annotations.Nullable;
  * Changes an {@link ItemStack} to the given {@link Material}.
  * @since 0.0.3
  */
-public class MaterialField extends AbstractField<Material>
+public class MaterialFieldType extends AbstractFieldType<Material>
 {
-    public MaterialField(Material material)
+    public MaterialFieldType(String key, Material material)
     {
-        super("material", material);
+        super(key, material);
     }
 
-    public MaterialField(ConfigurationSection section)
+    public MaterialFieldType(String key, ConfigurationSection section)
     {
-        super("material", section);
+        super(key, section);
     }
 
     @Override

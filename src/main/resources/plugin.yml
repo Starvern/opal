@@ -1,0 +1,8 @@
+# For MockBukkit
+name: Opal
+version: ${version}
+main: net.sierr.opal.OpalPlugin
+api-version: '1.21'
+authors: [ Starvern ]
+description: An advanced custom items plugin.
+website: sierr.net

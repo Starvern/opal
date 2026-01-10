@@ -1,5 +1,6 @@
 package net.sierr.opal.item;
 
+import net.sierr.opal.fields.AbstractFieldType;
 import net.sierr.opal.mod.AbstractMod;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -18,10 +19,10 @@ import java.util.Set;
 public class OpalItem
 {
     private final String id;
-    private final Set<AbstractField<?>> fields;
-    private final Set<AbstractMod<?>> mods;
+    private final Set<AbstractFieldType<?>> fields;
+    private final Set<AbstractMod<?, ?>> mods;
 
-    public OpalItem(String id, Set<AbstractField<?>> fields)
+    public OpalItem(String id, Set<AbstractFieldType<?>> fields)
     {
         this.id = id;
         this.fields = fields;
@@ -42,21 +43,21 @@ public class OpalItem
      * @param mod The {@link AbstractMod} to add to this item.
      * @since 0.0.3
      */
-    public void addMod(AbstractMod<?> mod)
+    public void addMod(AbstractMod<?, ?> mod)
     {
         this.mods.add(mod);
     }
 
     /**
      * @param type The type to check for.
-     * @return An {@link AbstractField} where {@link AbstractField#getType()} equals the given type, or null.
+     * @return An {@link AbstractFieldType} where {@link AbstractFieldType#getType()} equals the given type, or null.
      * @since 0.0.3
      */
-    private @Nullable AbstractField<?> getByType(Class<?> type, Set<AbstractField<?>> fields)
+    private @Nullable AbstractFieldType<?> getByType(Class<?> type, Set<AbstractFieldType<?>> fields)
     {
-        for (AbstractField<?> field : fields)
+        for (AbstractFieldType<?> field : fields)
         {
-            if (field.getType().equals(type))
+            if (type.isInstance(field))
                 return field;
         }
         return null;
@@ -68,25 +69,26 @@ public class OpalItem
      *     change each field according to any {@link AbstractMod}(s) this item may have
      * </p>
      * @return <p>
-     *     A {@link Set} containing the final {@link AbstractField}(s) to be pushed on
+     *     A {@link Set} containing the final {@link AbstractFieldType}(s) to be pushed on
      *     the item.
      * </p>
      * @since 0.0.3
      */
-    public Set<AbstractField<?>> applyMods()
+    public Set<AbstractFieldType<?>> applyMods()
     {
-        Set<AbstractField<?>> applyFields = new HashSet<>(this.fields);
+        Set<AbstractFieldType<?>> applyFields = new HashSet<>(this.fields);
 
-        for (AbstractMod<?> mod : this.mods)
+        for (AbstractMod<?, ?> mod : this.mods)
         {
-            @Nullable AbstractField<?> correspondingField = getByType(mod.getType(), applyFields);
+            @Nullable AbstractFieldType<?> correspondingField = getByType(mod.getFieldType(), applyFields);
             if (correspondingField == null)
             {
                 applyFields.add(mod.applyMod());
                 continue;
             }
+
             applyFields.remove(correspondingField);
-            applyFields.add(mod.applyMod(correspondingField));
+            applyFields.add(mod.applyMod(mod.castOrNull(correspondingField)));
         }
 
         return applyFields;
@@ -98,11 +100,11 @@ public class OpalItem
      */
     public ItemStack buildItemStack()
     {
-        Set<AbstractField<?>> applyFields = applyMods();
+        Set<AbstractFieldType<?>> applyFields = applyMods();
 
         ItemStack itemStack = ItemStack.of(Material.STONE);
 
-        for (AbstractField<?> field : applyFields)
+        for (AbstractFieldType<?> field : applyFields)
         {
             itemStack = field.apply(itemStack);
         }
