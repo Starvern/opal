@@ -1,7 +1,6 @@
 package net.sierr.opal.mod;
 
-import net.sierr.opal.item.AbstractField;
-import net.sierr.opal.item.MaterialField;
+import net.sierr.opal.fields.MaterialFieldType;
 import org.bukkit.Material;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
  */
 @ApiStatus.Experimental
 @ApiStatus.Internal
-public class BedrockMod extends AbstractMod<Material>
+public class BedrockMod extends AbstractMod<Material, MaterialFieldType>
 {
     public BedrockMod()
     {
@@ -22,14 +21,14 @@ public class BedrockMod extends AbstractMod<Material>
     }
 
     @Override
-    public Class<Material> getType()
+    public Class<MaterialFieldType> getFieldType()
     {
-        return Material.class;
+        return MaterialFieldType.class;
     }
 
     @Override
-    public @NotNull MaterialField applyMod(@Nullable AbstractField<?> field)
+    public @NotNull MaterialFieldType executeApplication(@Nullable MaterialFieldType field)
     {
-        return new MaterialField(Material.BEDROCK);
+        return new MaterialFieldType("material", Material.BEDROCK);
     }
 }

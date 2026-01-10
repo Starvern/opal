@@ -1,5 +1,7 @@
 package net.sierr.opal.item;
 
+import net.sierr.opal.fields.AbstractFieldType;
+import net.sierr.opal.fields.MaterialFieldType;
 import net.sierr.opal.mod.BedrockMod;
 import org.bukkit.Material;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +18,8 @@ public class OpalItemTests
     @BeforeEach
     public void setup()
     {
-        Set<AbstractField<?>> fields = new HashSet<>(Set.of(
-                new MaterialField(Material.DIAMOND_SWORD)
+        Set<AbstractFieldType<?>> fields = new HashSet<>(Set.of(
+                new MaterialFieldType("material", Material.DIAMOND_SWORD)
         ));
 
         this.item = new OpalItem("test_item", fields);
@@ -26,7 +28,7 @@ public class OpalItemTests
     @Test
     public void testItem()
     {
-        Set<AbstractField<?>> appliedFields = this.item.applyMods();
+        Set<AbstractFieldType<?>> appliedFields = this.item.applyMods();
 
         assertEquals(
                 Material.DIAMOND_SWORD,
@@ -38,7 +40,7 @@ public class OpalItemTests
     public void testItemWithMods()
     {
         this.item.addMod(new BedrockMod());
-        Set<AbstractField<?>> appliedFields = this.item.applyMods();
+        Set<AbstractFieldType<?>> appliedFields = this.item.applyMods();
 
         assertEquals(
                 Material.BEDROCK,

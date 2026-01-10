@@ -1,4 +1,4 @@
-package net.sierr.opal.item;
+package net.sierr.opal.fields;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,7 +26,7 @@ public class FieldTests
     @Test
     void testMaterialField()
     {
-        MaterialField field = new MaterialField(this.testItemSection);
+        MaterialFieldType field = new MaterialFieldType("material", this.testItemSection);
         assertEquals("material", field.key);
         assertEquals(Material.DIAMOND_SWORD, field.getValue());
 

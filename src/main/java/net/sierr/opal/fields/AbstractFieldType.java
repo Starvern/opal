@@ -1,5 +1,6 @@
-package net.sierr.opal.item;
+package net.sierr.opal.fields;
 
+import net.sierr.opal.item.OpalItem;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -14,14 +15,14 @@ import org.jetbrains.annotations.Nullable;
  * @param <T> The type of value this field holds.
  * @since 0.0.2
  */
-public abstract class AbstractField<T>
+public abstract class AbstractFieldType<T>
 {
     protected final String key;
 
     protected ConfigurationSection section;
     protected T value;
 
-    public AbstractField(
+    public AbstractFieldType(
             @NotNull String key,
             @NotNull T value
     ) {
@@ -29,7 +30,7 @@ public abstract class AbstractField<T>
         this.value = value;
     }
 
-    public AbstractField(
+    public AbstractFieldType(
             @NotNull String key,
             @NotNull ConfigurationSection section
     ) {
@@ -47,7 +48,7 @@ public abstract class AbstractField<T>
     }
 
     /**
-     * @return The key of the value to pull from {@link AbstractField#getSection()}.
+     * @return The key of the value to pull from {@link AbstractFieldType#getSection()}.
      * @since 0.0.2
      */
     public String getKey()
@@ -63,16 +64,25 @@ public abstract class AbstractField<T>
 
     /**
      * @return <p>
-     *     Either the {@link AbstractField#value} passed to this field, or if null,
-     *     the value retrieved from the {@link AbstractField#getSection()}.
+     *     Either the {@link AbstractFieldType#value} passed to this field, or if null,
+     *     the value retrieved from the {@link AbstractFieldType#getSection()}.
      * </p>
      * @since 0.0.2
      */
     public abstract @Nullable T getValue();
 
     /**
+     * @param value The {@link T} value to set to.
+     * @since 0.0.4
+     */
+    public void setValue(@Nullable T value)
+    {
+        this.value = value;
+    }
+
+    /**
      * <p>
-     *     Uses the value of {@link AbstractField#getValue()} to
+     *     Uses the value of {@link AbstractFieldType#getValue()} to
      *     make changes to an {@link ItemStack}.
      * </p>
      * @param itemStack The {@link ItemStack} to apply changes to.
