@@ -38,13 +38,23 @@ public class OpalItem
     }
 
     /**
+     * Add a mod to this item.
+     * @param mod The {@link AbstractMod} to add to this item.
+     * @since 0.0.3
+     */
+    public void addMod(AbstractMod<?> mod)
+    {
+        this.mods.add(mod);
+    }
+
+    /**
      * @param type The type to check for.
      * @return An {@link AbstractField} where {@link AbstractField#getType()} equals the given type, or null.
      * @since 0.0.3
      */
-    private @Nullable AbstractField<?> getByType(Class<?> type)
+    private @Nullable AbstractField<?> getByType(Class<?> type, Set<AbstractField<?>> fields)
     {
-        for (AbstractField<?> field : this.fields)
+        for (AbstractField<?> field : fields)
         {
             if (field.getType().equals(type))
                 return field;
@@ -53,28 +63,48 @@ public class OpalItem
     }
 
     /**
+     * <p>
+     *     Starting with the original value of {@link OpalItem#fields}, this method will
+     *     change each field according to any {@link AbstractMod}(s) this item may have
+     * </p>
+     * @return <p>
+     *     A {@link Set} containing the final {@link AbstractField}(s) to be pushed on
+     *     the item.
+     * </p>
+     * @since 0.0.3
+     */
+    public Set<AbstractField<?>> applyMods()
+    {
+        Set<AbstractField<?>> applyFields = new HashSet<>(this.fields);
+
+        for (AbstractMod<?> mod : this.mods)
+        {
+            @Nullable AbstractField<?> correspondingField = getByType(mod.getType(), applyFields);
+            if (correspondingField == null)
+            {
+                applyFields.add(mod.applyMod());
+                continue;
+            }
+            applyFields.remove(correspondingField);
+            applyFields.add(mod.applyMod(correspondingField));
+        }
+
+        return applyFields;
+    }
+
+    /**
      * @return An {@link ItemStack} built from {@link OpalItem#fields}.
      * @since 0.0.3
      */
     public ItemStack buildItemStack()
     {
+        Set<AbstractField<?>> applyFields = applyMods();
+
         ItemStack itemStack = ItemStack.of(Material.STONE);
 
-        for (AbstractField<?> field : this.fields)
+        for (AbstractField<?> field : applyFields)
         {
             itemStack = field.apply(itemStack);
-        }
-
-        for (AbstractMod<?> mod : this.mods)
-        {
-            @Nullable AbstractField<?> correspondingField = getByType(mod.getType());
-            if (correspondingField == null)
-            {
-                itemStack = mod.applyMod().apply(itemStack);
-                continue;
-            }
-
-            itemStack = mod.applyMod(correspondingField).apply(itemStack);
         }
 
         return itemStack;

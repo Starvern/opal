@@ -7,7 +7,9 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>
- *
+ *     Represents a key-value pair which stores a specific aspect of an {@link OpalItem}.
+ *     The value may either be provided directly, or indirectly by passing a {@link ConfigurationSection}
+ *     to the constructor.
  * </p>
  * @param <T> The type of value this field holds.
  * @since 0.0.2
