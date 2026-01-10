@@ -1,20 +1,20 @@
 package net.sierr.opal;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
-public final class Opal extends JavaPlugin
+public class Opal
 {
+    private final OpalPlugin plugin;
 
-    @Override
-    public void onEnable()
+    public Opal(OpalPlugin plugin)
     {
-        // Plugin startup logic
-
+        this.plugin = plugin;
     }
 
-    @Override
-    public void onDisable()
+    /**
+     * @return The instance of {@link OpalPlugin} for this API.
+     * @since 0.0.2
+     */
+    public OpalPlugin getPlugin()
     {
-        // Plugin shutdown logic
+        return this.plugin;
     }
 }

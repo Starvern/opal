@@ -1,6 +1,6 @@
 name: Opal
-version: '0.1.0'
-main: net.sierr.opal.Opal
+version: ${version}
+main: net.sierr.opal.OpalPlugin
 api-version: '1.21'
 authors: [ Starvern ]
 description: An advanced custom items plugin.

@@ -1,0 +1,8 @@
+test_item:
+  material: DIAMOND_SWORD
+  name: '<blue>Fancy Diamond Sword</blue>'
+  lore:
+    - '<gray>A fancy diamond sword!</gray>'
+  enchantments:
+    sharpness: 1
+  attack_damage: 8
