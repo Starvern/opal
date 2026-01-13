@@ -1,12 +1,17 @@
 package net.sierr.opal;
 
-import net.sierr.opal.fields.FieldEntry;
-import net.sierr.opal.fields.MaterialFieldType;
+import net.sierr.opal.fields.*;
+import net.sierr.opal.fields.impl.AttackDamageFieldType;
+import net.sierr.opal.fields.impl.LoreFieldType;
+import net.sierr.opal.fields.impl.MaterialFieldType;
+import net.sierr.opal.fields.impl.NameFieldType;
 import net.sierr.opal.manager.FieldManager;
 import net.sierr.opal.manager.ItemManager;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.ServicePriority;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 public class Opal
@@ -27,6 +32,16 @@ public class Opal
     }
 
     /**
+     * @param key The key in the namespace "opal".
+     * @return A new {@link NamespacedKey}.
+     * @since 0.0.5
+     */
+    public static NamespacedKey getKey(String key)
+    {
+        return new NamespacedKey("opal", key);
+    }
+
+    /**
      * <p>
      *     Adds this API to Bukkit's {@link org.bukkit.plugin.ServicesManager}.
      *     Also performs {@link Opal#registerProvidedFields()}.
@@ -42,7 +57,9 @@ public class Opal
                 ServicePriority.Normal
         );
 
+        // Load fields first.
         this.registerProvidedFields();
+        this.itemManager.loadItems();
     }
 
     /**
@@ -60,13 +77,17 @@ public class Opal
      */
     private void registerProvidedFields()
     {
-        this.fieldManager.registerEntry(
-                new FieldEntry<>(
-                        this,
-                        "material",
-                        MaterialFieldType.class
-                )
+        Set<FieldEntry<?, ?>> entries = Set.of(
+                new FieldEntry<>(this, "material", MaterialFieldType.class),
+                new FieldEntry<>(this, "name", NameFieldType.class),
+                new FieldEntry<>(this, "lore", LoreFieldType.class),
+                new FieldEntry<>(this, "attack_damage", AttackDamageFieldType.class)
         );
+
+        for (FieldEntry<?, ?> entry : entries)
+        {
+            this.fieldManager.registerEntry(entry);
+        }
     }
 
     /**

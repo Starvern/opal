@@ -15,6 +15,6 @@ public class FieldManagerTests
     {
         FieldManager fieldManager = opal.getApi().getFieldManager();
 
-        assertEquals(1, fieldManager.getEntries().size());
+        assertEquals(4, fieldManager.getEntries().size());
     }
 }

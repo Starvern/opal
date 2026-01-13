@@ -5,3 +5,14 @@ api-version: '1.21'
 authors: [ Starvern ]
 description: An advanced custom items plugin.
 website: sierr.net
+commands:
+  opal:
+    description: Manage Opal
+    permission: opal.command
+    aliases: [o]
+    permission-message: "Insufficient permissions."
+    usage: opal <give> <item ID>
+permissions:
+  opal.command:
+    description: Allows the user to use /opal
+    default: op
