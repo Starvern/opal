@@ -46,7 +46,10 @@ public class ItemManager
         {
             @Nullable FieldEntry<?, ?> entry = this.api.getFieldManager().getEntryByKey(fieldKey);
             if (entry == null)
+            {
+                this.api.getLogger().warning("Unknown field: " + fieldKey + " inside item: " + key);
                 continue;
+            }
 
             fields.add(entry.construct(section));
         }
@@ -120,5 +123,20 @@ public class ItemManager
     public void addItem(OpalItem item)
     {
         this.items.add(item);
+    }
+
+    /**
+     * @param id The ID of the {@link OpalItem} to get.
+     * @return The {@link OpalItem}, or null.
+     * @since 0.0.4
+     */
+    public @Nullable OpalItem getItem(String id)
+    {
+        for (OpalItem item : this.items)
+        {
+            if (item.getId().equals(id))
+                return item;
+        }
+        return null;
     }
 }

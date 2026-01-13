@@ -1,5 +1,6 @@
-package net.sierr.opal.fields;
+package net.sierr.opal.fields.impl;
 
+import net.sierr.opal.fields.AbstractFieldType;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;

@@ -1,7 +1,7 @@
 package net.sierr.opal.item;
 
 import net.sierr.opal.fields.AbstractFieldType;
-import net.sierr.opal.fields.MaterialFieldType;
+import net.sierr.opal.fields.impl.MaterialFieldType;
 import net.sierr.opal.mod.BedrockMod;
 import org.bukkit.Material;
 import org.junit.jupiter.api.BeforeEach;

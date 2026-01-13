@@ -1,5 +1,6 @@
 package net.sierr.opal.fields;
 
+import net.sierr.opal.fields.impl.MaterialFieldType;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;

@@ -3,7 +3,9 @@ package net.sierr.opal.item;
 import net.sierr.opal.fields.AbstractFieldType;
 import net.sierr.opal.mod.AbstractMod;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
@@ -12,12 +14,14 @@ import java.util.Set;
 /**
  * <p>
  *     Represents an instance of an actual item. This can either be built from scratch via config, or
- *     through the API via an existing {@link ItemStack}.
+ *     through the API via an existing {@link ItemStack} (see {@link OpalItemBuilder}).
  * </p>
  * @since 0.0.3
  */
 public class OpalItem
 {
+    private static final NamespacedKey KEY = new NamespacedKey("opal", "item");
+
     private final String id;
     private final Set<AbstractFieldType<?>> fields;
     private final Set<AbstractMod<?, ?>> mods;
@@ -103,11 +107,13 @@ public class OpalItem
         Set<AbstractFieldType<?>> applyFields = applyMods();
 
         ItemStack itemStack = ItemStack.of(Material.STONE);
+        itemStack.editMeta(meta ->
+                meta.getPersistentDataContainer()
+                        .set(KEY, PersistentDataType.STRING, this.id)
+        );
 
         for (AbstractFieldType<?> field : applyFields)
-        {
             itemStack = field.apply(itemStack);
-        }
 
         return itemStack;
     }

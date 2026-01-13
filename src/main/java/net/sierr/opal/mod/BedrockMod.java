@@ -1,6 +1,6 @@
 package net.sierr.opal.mod;
 
-import net.sierr.opal.fields.MaterialFieldType;
+import net.sierr.opal.fields.impl.MaterialFieldType;
 import org.bukkit.Material;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
